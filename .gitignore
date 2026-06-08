@@ -1,0 +1,31 @@
+# зависимости
+node_modules/
+package-lock.json
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ОС
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# логи и временные файлы
+*.log
+*.tmp
+.cache/
+
+# сборка
+dist/
+build/
+.vite/
+
+# env файлы
+.env
+.env.local
+
+node_modules/
