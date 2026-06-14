@@ -41,7 +41,7 @@ function getRecipesByType(type, count = 1) {
     
     const shuffled = [...filtered]
     for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
+        const j = Math.floor(Math.random() * (i + 1)) // NOSONAR
         ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
     return shuffled.slice(0, count)
