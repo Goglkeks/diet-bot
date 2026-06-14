@@ -1,3 +1,5 @@
+/* global showMessage, calculateKBJU, displayResult, saveProfile, loadProfile, generateDayMenu, displayDayMenu, closeMenuBlock */
+
 //главный файл приложения - инициализация и обработчики событий
 
 //глобальные переменные для хранения текущих данных (вынеси их в самое начало)
