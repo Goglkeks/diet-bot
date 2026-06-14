@@ -1,5 +1,17 @@
 //модуль расчёта кбжу
 
+//класс пользователя (объектная модель по требованию п.2.1)
+class User {
+    constructor(age, weight, height, gender, activity, goal) {
+        this.age = age
+        this.weight = weight
+        this.height = height
+        this.gender = gender
+        this.activity = activity
+        this.goal = goal
+    }
+}
+
 //коэффициенты активности
 const activityFactors = {
     low: 1.2,
@@ -55,8 +67,14 @@ function calculateMacros(calories, goal) {
     return { protein, fat, carbs }
 }
 
-//главная функция расчёта кбжу
+//главная функция расчёта кбжу (принимает либо параметры, либо объект User)
 function calculateKBJU(age, weight, height, gender, activity, goal) {
+    //если передан объект User
+    if (typeof age === "object" && age !== null) {
+        const user = age
+        return calculateKBJU(user.age, user.weight, user.height, user.gender, user.activity, user.goal)
+    }
+    
     const bmr = calculateBMR(age, weight, height, gender)
     const calories = calculateDailyCalories(bmr, activity, goal)
     const macros = calculateMacros(calories, goal)

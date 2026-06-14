@@ -1,4 +1,5 @@
 /* global mealOrder, mealTypes */
+
 //модуль отображения интерфейса
 
 //отображение результата расчёта на странице
@@ -23,7 +24,7 @@ function showMessage(text, isSuccess = true) {
 //отображение меню на день
 function displayDayMenu(menuData) {
     if (!menuData || !menuData.menu) {
-        document.getElementById("menuContent").innerHTML = "<div class=\"error\">Не удалось сгенерировать меню</div>"
+        document.getElementById("menuContent").innerHTML = `<div class="error">Не удалось сгенерировать меню</div>`
         document.getElementById("menuBlock").classList.remove("hidden")
         return
     }

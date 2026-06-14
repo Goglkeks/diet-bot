@@ -2,7 +2,7 @@
 
 //главный файл приложения - инициализация и обработчики событий
 
-//глобальные переменные для хранения текущих данных (вынеси их в самое начало)
+//глобальные переменные для хранения текущих данных
 let lastUserData = null
 let lastKBJU = null
 
@@ -49,12 +49,12 @@ function handleFormSubmit(event) {
     lastUserData = userData
     lastKBJU = kbju
     
-    console.log("Расчёт выполнен, данные сохранены:", lastUserData, lastKBJU) //для отладки
+    console.log("Расчёт выполнен, данные сохранены:", lastUserData, lastKBJU)
 }
 
 //обработчик кнопки сохранения
 function handleSaveProfile() {
-    console.log("Сохранение, lastUserData:", lastUserData) //для отладки
+    console.log("Сохранение, lastUserData:", lastUserData)
     
     if (lastUserData && lastKBJU) {
         saveProfile(lastUserData, lastKBJU)
@@ -66,10 +66,10 @@ function handleSaveProfile() {
 
 //обработчик кнопки загрузки профиля
 function handleLoadProfile() {
-    console.log("Загрузка профиля") //для отладки
+    console.log("Загрузка профиля")
     
     const profile = loadProfile()
-    console.log("Загруженный профиль:", profile) //для отладки
+    console.log("Загруженный профиль:", profile)
     
     if (profile) {
         document.getElementById("age").value = profile.user.age

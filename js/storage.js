@@ -29,7 +29,7 @@ function saveProfile(userData, kbjuData) {
 //загрузка профиля
 function loadProfile() {
     const saved = localStorage.getItem(STORAGE_KEY)
-    console.log("Данные из localStorage:", saved) //для отладки
+    console.log("Данные из localStorage:", saved)
     
     if (!saved) {
         return null
