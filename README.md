@@ -1,6 +1,6 @@
 #Калькулятор КБЖУ
 
-**Деплой:** (ссылка будет после деплоя на GitHub Pages)
+**Деплой:** https://goglkeks.github.io/diet-bot/
 
 ---
 
