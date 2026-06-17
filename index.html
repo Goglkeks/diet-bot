@@ -8,14 +8,14 @@
 </head>
 <body>
     <div class="container">
-        <button id="loadTopBtn">Загрузить профиль</button>
+        <button type="button" id="loadTopBtn">Загрузить профиль</button>
         <h1>DietCalc</h1>
         <p>Калькулятор КБЖУ</p>
         <div class="card">
             <form id="dietForm">
-                <input type="number" id="age" placeholder="Возраст">
-                <input type="number" id="weight" placeholder="Вес">
-                <input type="number" id="height" placeholder="Рост">
+                <input type="number" id="age" placeholder="Возраст" required min="1" max="120">
+                <input type="number" id="weight" placeholder="Вес" required min="1" max="300">
+                <input type="number" id="height" placeholder="Рост" required min="50" max="250">
                 <select id="gender">
                     <option value="female">Женский</option>
                     <option value="male">Мужской</option>
@@ -39,15 +39,17 @@
                     <div>Жиры: <span id="fat">0</span>г</div>
                     <div>Углеводы: <span id="carbs">0</span>г</div>
                 </div>
-                <button id="dayMenuBtn">Меню на день</button>
-                <button id="saveBtn">Сохранить</button>
+                <button type="button" id="dayMenuBtn">Меню на день</button>
+                <button type="button" id="saveBtn">Сохранить</button>
                 <div id="message"></div>
             </div>
             <div id="menuBlock" class="hidden">
-                <h3>Меню</h3>
-                <div id="menuContent"></div>
-                <button id="closeMenuBtn">Закрыть</button>
-                <button id="refreshMenuBtn">Обновить</button>
+                <section>
+                    <h3>Меню</h3>
+                    <div id="menuContent"></div>
+                    <button type="button" id="closeMenuBtn">Закрыть</button>
+                    <button type="button" id="refreshMenuBtn">Обновить</button>
+                </section>
             </div>
         </div>
     </div>

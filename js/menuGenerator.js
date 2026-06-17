@@ -265,7 +265,7 @@ function generateDayMenu(kbju) {
             return recipe.type === type
         })
         menu[type] = filteredRecipes.length > 0 
-            ? filteredRecipes[Math.floor(Math.random() * filteredRecipes.length)] 
+            ? filteredRecipes[Math.floor(Math.random() * filteredRecipes.length)] //NOSONAR
             : null
     })
     
