@@ -1,75 +1,61 @@
-/* global showMessage, calculateKBJU, displayResult, saveProfile, loadProfile, generateDayMenu, displayDayMenu, closeMenuBlock */
+//главный файл приложения
 
-//главный файл приложения - инициализация и обработчики событий
-
-//глобальные переменные для хранения текущих данных
+//глобальные переменные
 let lastUserData = null
-let lastKBJU = null
-
-//получение элементов dom
-const form = document.getElementById("dietForm")
-
-//инициализация приложения
-function initApp() {
-    console.log("приложение запущено")
-}
+let lastKBJUData = null
+const formElement = document.getElementById("dietForm")
 
 //обработчик отправки формы
 function handleFormSubmit(event) {
     event.preventDefault()
     
-    const age = parseInt(document.getElementById("age").value)
-    const weight = parseFloat(document.getElementById("weight").value)
-    const height = parseInt(document.getElementById("height").value)
-    const gender = document.getElementById("gender").value
-    const goal = document.getElementById("goal").value
-    const activity = document.getElementById("activity").value
+    const ageValue = Number(document.getElementById("age").value)
+    const weightValue = Number(document.getElementById("weight").value)
+    const heightValue = Number(document.getElementById("height").value)
     
-    if (!age || age < 1 || age > 120) {
-        showMessage("Введите возраст от 1 до 120 лет", false)
+    //проверка на пустые поля
+    if (!ageValue || !weightValue || !heightValue) {
+        showMessage("Введите числа", false)
         return
     }
     
-    if (!weight || weight < 20 || weight > 250) {
-        showMessage("Введите вес от 20 до 250 кг", false)
-        return
+    const genderValue = document.getElementById("gender").value
+    const goalValue = document.getElementById("goal").value
+    const activityValue = document.getElementById("activity").value
+    
+    const kbjuResult = calculateKBJU(ageValue, weightValue, heightValue, genderValue, activityValue, goalValue)
+    displayResult(kbjuResult)
+    
+    lastUserData = { 
+        age: ageValue, 
+        weight: weightValue, 
+        height: heightValue, 
+        gender: genderValue, 
+        goal: goalValue, 
+        activity: activityValue 
     }
+    lastKBJUData = kbjuResult
     
-    if (!height || height < 100 || height > 250) {
-        showMessage("Введите рост от 100 до 250 см", false)
-        return
-    }
-    
-    const kbju = calculateKBJU(age, weight, height, gender, activity, goal)
-    const userData = { age, weight, height, gender, goal, activity }
-    
-    displayResult(kbju)
-    
-    //сохраняем в глобальные переменные
-    lastUserData = userData
-    lastKBJU = kbju
-    
-    console.log("Расчёт выполнен, данные сохранены:", lastUserData, lastKBJU)
+    console.log("Расчёт выполнен:", lastUserData, lastKBJUData)
 }
 
-//обработчик кнопки сохранения
+//сохранение профиля
 function handleSaveProfile() {
-    console.log("Сохранение, lastUserData:", lastUserData)
-    
-    if (lastUserData && lastKBJU) {
-        saveProfile(lastUserData, lastKBJU)
-        showMessage("Профиль сохранён", true)
+    if (lastUserData && lastKBJUData) {
+        const saved = saveProfile(lastUserData, lastKBJUData)
+        if (saved) {
+            showMessage("Сохранено", true)
+        } else {
+            showMessage("Ошибка сохранения", false)
+        }
     } else {
         showMessage("Сначала сделайте расчёт", false)
     }
 }
 
-//обработчик кнопки загрузки профиля
+//загрузка профиля
 function handleLoadProfile() {
-    console.log("Загрузка профиля")
-    
     const profile = loadProfile()
-    console.log("Загруженный профиль:", profile)
     
     if (profile) {
         document.getElementById("age").value = profile.user.age
@@ -83,61 +69,70 @@ function handleLoadProfile() {
         showMessage("Профиль загружен", true)
         
         lastUserData = profile.user
-        lastKBJU = profile.kbju
+        lastKBJUData = profile.kbju
     } else {
         showMessage("Нет сохранённого профиля", false)
     }
 }
 
-//обработчик кнопки меню на день
-function handleDayMenu() {
-    if (!lastKBJU) {
+//генерация меню
+function handleGenerateMenu() {
+    if (!lastKBJUData) {
         showMessage("Сначала сделайте расчёт", false)
         return
     }
     
-    const menuData = generateDayMenu(lastKBJU)
-    displayDayMenu(menuData)
+    const menuData = generateDayMenu(lastKBJUData)
+    displayMenu(menuData)
 }
 
-//обработчик кнопки обновления меню
+//обновление меню
 function handleRefreshMenu() {
-    if (!lastKBJU) {
+    if (!lastKBJUData) {
         showMessage("Сначала сделайте расчёт", false)
         return
     }
     
-    const menuData = generateDayMenu(lastKBJU)
-    displayDayMenu(menuData)
+    const menuData = generateDayMenu(lastKBJUData)
+    displayMenu(menuData)
 }
 
-//обработчик кнопки закрытия меню
+//закрытие меню
 function handleCloseMenu() {
     closeMenuBlock()
 }
 
-//регистрация всех обработчиков событий
-function bindEvents() {
-    form.addEventListener("submit", handleFormSubmit)
+//инициализация приложения
+function initializeApp() {
+    formElement.addEventListener("submit", handleFormSubmit)
     
-    const saveBtn = document.getElementById("saveBtn")
-    if (saveBtn) saveBtn.addEventListener("click", handleSaveProfile)
+    const saveButton = document.getElementById("saveBtn")
+    if (saveButton) {
+        saveButton.addEventListener("click", handleSaveProfile)
+    }
     
-    const loadTopBtn = document.getElementById("loadTopBtn")
-    if (loadTopBtn) loadTopBtn.addEventListener("click", handleLoadProfile)
+    const loadButton = document.getElementById("loadTopBtn")
+    if (loadButton) {
+        loadButton.addEventListener("click", handleLoadProfile)
+    }
     
-    const dayMenuBtn = document.getElementById("dayMenuBtn")
-    if (dayMenuBtn) dayMenuBtn.addEventListener("click", handleDayMenu)
+    const menuButton = document.getElementById("dayMenuBtn")
+    if (menuButton) {
+        menuButton.addEventListener("click", handleGenerateMenu)
+    }
     
-    const refreshMenuBtn = document.getElementById("refreshMenuBtn")
-    if (refreshMenuBtn) refreshMenuBtn.addEventListener("click", handleRefreshMenu)
+    const refreshButton = document.getElementById("refreshMenuBtn")
+    if (refreshButton) {
+        refreshButton.addEventListener("click", handleRefreshMenu)
+    }
     
-    const closeMenuBtn = document.getElementById("closeMenuBtn")
-    if (closeMenuBtn) closeMenuBtn.addEventListener("click", handleCloseMenu)
+    const closeButton = document.getElementById("closeMenuBtn")
+    if (closeButton) {
+        closeButton.addEventListener("click", handleCloseMenu)
+    }
+    
+    console.log("Приложение запущено")
 }
 
-//запуск приложения
-document.addEventListener("DOMContentLoaded", () => {
-    initApp()
-    bindEvents()
-})
+//запуск приложения после загрузки страницы
+document.addEventListener("DOMContentLoaded", initializeApp)

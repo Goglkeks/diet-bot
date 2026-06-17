@@ -1,8 +1,16 @@
-/* global mealOrder, mealTypes */
-
 //модуль отображения интерфейса
 
-//отображение результата расчёта на странице
+//показать сообщение пользователю
+function showMessage(text, isSuccess) {
+    const messageElement = document.getElementById("message")
+    messageElement.textContent = text
+    messageElement.style.color = isSuccess ? "#4caf50" : "#f44336"
+    setTimeout(function() {
+        messageElement.textContent = ""
+    }, 3000)
+}
+
+//отображение результата расчёта
 function displayResult(data) {
     document.getElementById("calories").textContent = data.calories
     document.getElementById("protein").textContent = data.protein
@@ -11,78 +19,68 @@ function displayResult(data) {
     document.getElementById("result").classList.remove("hidden")
 }
 
-//показать сообщение пользователю
-function showMessage(text, isSuccess = true) {
-    const msgDiv = document.getElementById("message")
-    msgDiv.textContent = text
-    msgDiv.style.color = isSuccess ? "#4caf50" : "#f44336"
-    setTimeout(() => {
-        msgDiv.textContent = ""
-    }, 3000)
-}
-
-//отображение меню на день
-function displayDayMenu(menuData) {
-    if (!menuData || !menuData.menu) {
-        document.getElementById("menuContent").innerHTML = `<div class="error">Не удалось сгенерировать меню</div>`
+//отображение сгенерированного меню
+function displayMenu(data) {
+    const menuContentElement = document.getElementById("menuContent")
+    
+    //проверка на ошибки
+    if (!data || !data.menu) {
+        menuContentElement.innerHTML = "<div class='error'>Ошибка генерации меню</div>"
         document.getElementById("menuBlock").classList.remove("hidden")
         return
     }
     
-    const menu = menuData.menu
-    const diffPercent = menuData.diffPercent
-    const totalCalories = menuData.totalCalories
-    const targetCalories = menuData.targetCalories
+    let htmlCode = ""
     
-    let html = ""
-    
-    for (const mealType of mealOrder) {
-        const recipe = menu[mealType]
-        if (recipe) {
-            html += `
+    //проходим по всем типам пищи
+    for (let i = 0; i < mealOrder.length; i++) {
+        const type = mealOrder[i]
+        const recipe = data.menu[type]
+        
+        if (recipe !== null) {
+            htmlCode = htmlCode + `
                 <div class="meal-card">
                     <div class="meal-name">${recipe.name}</div>
-                    <div class="meal-category">${mealTypes[mealType]}</div>
+                    <div class="meal-category">${mealTypes[type]} | Порция: ${recipe.portion}</div>
                     <div class="meal-nutrition">
-                        <span>${recipe.calories} ккал</span>
-                        <span>Б: ${recipe.proteins}г</span>
-                        <span>Ж: ${recipe.fats}г</span>
-                        <span>У: ${recipe.carbs}г</span>
+                        ${recipe.calories} ккал | 
+                        Белки: ${recipe.proteins}г | 
+                        Жиры: ${recipe.fats}г | 
+                        Углеводы: ${recipe.carbs}г
                     </div>
                     <div class="meal-ingredients">
-                        <strong>Ингредиенты:</strong> ${recipe.ingredients}
+                        Ингредиенты: ${recipe.ingredients}
                     </div>
                     <div class="meal-instructions">
-                        <strong>Приготовление:</strong> ${recipe.instruction}
+                        Приготовление: ${recipe.instruction}
                     </div>
                 </div>
             `
         } else {
-            html += `
+            htmlCode = htmlCode + `
                 <div class="meal-card">
                     <div class="meal-name">Нет рецепта</div>
-                    <div class="meal-category">${mealTypes[mealType]}</div>
-                    <div class="meal-instructions">Не удалось подобрать блюдо</div>
+                    <div class="meal-category">${mealTypes[type]}</div>
                 </div>
             `
         }
     }
     
-    html += `
-        <div class="meal-card" style="background: #2e7d32">
+    //итоговая карточка
+    htmlCode = htmlCode + `
+        <div class="meal-card" style="background:#2e7d32">
             <div class="meal-name">Итого за день</div>
             <div class="meal-nutrition">
-                <span>${totalCalories} ккал</span>
-                <span>Норма: ${targetCalories} ккал</span>
-                <span>Отклонение: ${Math.round(diffPercent)}%</span>
+                ${data.total} ккал (норма: ${data.target} ккал)
             </div>
             <div class="meal-instructions">
-                ${diffPercent > 15 ? "Рекомендуем скорректировать порции." : "Отличное меню, соответствует вашей норме!"}
+                Отклонение: ${Math.round(data.diff)}% 
+                ${data.diff > 15 ? "Рекомендуем скорректировать порции" : "Отличное меню!"}
             </div>
         </div>
     `
     
-    document.getElementById("menuContent").innerHTML = html
+    menuContentElement.innerHTML = htmlCode
     document.getElementById("menuBlock").classList.remove("hidden")
 }
 

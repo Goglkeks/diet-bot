@@ -2,74 +2,55 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Калькулятор диет</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DietCalc | Калькулятор диет</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <div class="top-bar">
-            <button id="loadTopBtn" class="load-top">Загрузить профиль</button>
-        </div>
-
-        <h1>Калькулятор КБЖУ</h1>
-
+        <button id="loadTopBtn">Загрузить профиль</button>
+        <h1>DietCalc</h1>
+        <p>Калькулятор КБЖУ</p>
         <div class="card">
             <form id="dietForm">
-                <input type="number" id="age" placeholder="Возраст (лет)" inputmode="numeric" required>
-                <input type="number" id="weight" placeholder="Вес (кг)" inputmode="numeric" required>
-                <input type="number" id="height" placeholder="Рост (см)" inputmode="numeric" required>
-                
+                <input type="number" id="age" placeholder="Возраст">
+                <input type="number" id="weight" placeholder="Вес">
+                <input type="number" id="height" placeholder="Рост">
                 <select id="gender">
                     <option value="female">Женский</option>
                     <option value="male">Мужской</option>
                 </select>
-                
                 <select id="goal">
                     <option value="weight_loss">Похудение</option>
-                    <option value="maintain">Поддержание веса</option>
+                    <option value="maintain">Поддержание</option>
                     <option value="muscle_gain">Набор массы</option>
                 </select>
-                
                 <select id="activity">
-                    <option value="low">Низкая активность</option>
-                    <option value="moderate">Средняя активность</option>
-                    <option value="high">Высокая активность</option>
+                    <option value="low">Низкая</option>
+                    <option value="moderate">Средняя</option>
+                    <option value="high">Высокая</option>
                 </select>
-                
                 <button type="submit">Рассчитать</button>
             </form>
-
-            <div id="result" class="result hidden">
-                <h3>Ваша норма КБЖУ</h3>
+            <div id="result" class="hidden">
                 <div class="kbju-grid">
-                    <div>Калории: <span id="calories">0</span> ккал</div>
-                    <div>Белки: <span id="protein">0</span> г</div>
-                    <div>Жиры: <span id="fat">0</span> г</div>
-                    <div>Углеводы: <span id="carbs">0</span> г</div>
+                    <div>Калории: <span id="calories">0</span></div>
+                    <div>Белки: <span id="protein">0</span>г</div>
+                    <div>Жиры: <span id="fat">0</span>г</div>
+                    <div>Углеводы: <span id="carbs">0</span>г</div>
                 </div>
-                
-                <div class="menu-buttons">
-                    <button id="dayMenuBtn" class="menu-btn">Меню на день</button>
-                </div>
-                
-                <div class="buttons">
-                    <button id="saveBtn" class="save">Сохранить профиль</button>
-                </div>
+                <button id="dayMenuBtn">Меню на день</button>
+                <button id="saveBtn">Сохранить</button>
                 <div id="message"></div>
             </div>
-
-            <div id="menuBlock" class="menu-block hidden">
-                <div class="menu-header">
-                    <h3>Меню на день</h3>
-                    <button id="refreshMenuBtn" class="refresh-btn">Обновить</button>
-                </div>
+            <div id="menuBlock" class="hidden">
+                <h3>Меню</h3>
                 <div id="menuContent"></div>
-                <button id="closeMenuBtn" class="close-btn">Закрыть</button>
+                <button id="closeMenuBtn">Закрыть</button>
+                <button id="refreshMenuBtn">Обновить</button>
             </div>
         </div>
     </div>
-
     <script src="js/calculator.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/menuGenerator.js"></script>
