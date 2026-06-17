@@ -13,25 +13,38 @@
         <p>Калькулятор КБЖУ</p>
         <div class="card">
             <form id="dietForm">
+                <label for="age">Возраст (лет)</label>
                 <input type="number" id="age" placeholder="Возраст" required min="1" max="120">
+
+                <label for="weight">Вес (кг)</label>
                 <input type="number" id="weight" placeholder="Вес" required min="1" max="300">
+
+                <label for="height">Рост (см)</label>
                 <input type="number" id="height" placeholder="Рост" required min="50" max="250">
-                <select id="gender">
+
+                <label for="gender">Пол</label>
+                <select id="gender" required>
                     <option value="female">Женский</option>
                     <option value="male">Мужской</option>
                 </select>
-                <select id="goal">
+
+                <label for="goal">Цель</label>
+                <select id="goal" required>
                     <option value="weight_loss">Похудение</option>
                     <option value="maintain">Поддержание</option>
                     <option value="muscle_gain">Набор массы</option>
                 </select>
-                <select id="activity">
+
+                <label for="activity">Уровень активности</label>
+                <select id="activity" required>
                     <option value="low">Низкая</option>
                     <option value="moderate">Средняя</option>
                     <option value="high">Высокая</option>
                 </select>
+
                 <button type="submit">Рассчитать</button>
             </form>
+
             <div id="result" class="hidden">
                 <div class="kbju-grid">
                     <div>Калории: <span id="calories">0</span></div>
@@ -43,6 +56,7 @@
                 <button type="button" id="saveBtn">Сохранить</button>
                 <div id="message"></div>
             </div>
+
             <div id="menuBlock" class="hidden">
                 <section>
                     <h3>Меню</h3>
@@ -53,6 +67,7 @@
             </div>
         </div>
     </div>
+
     <script src="js/calculator.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/menuGenerator.js"></script>
